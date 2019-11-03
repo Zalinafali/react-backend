@@ -1,7 +1,11 @@
 package pw.react.backend.reactbackend.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import pw.react.backend.reactbackend.utils.JsonDateDeserializer;
+import pw.react.backend.reactbackend.utils.JsonDateSerializer;
+
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -13,26 +17,22 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @NotBlank
     @Column(name = "login", nullable = false)
     private String login;
 
-    @NotBlank
-    @Column(name = "first_name", nullable = false)
+    @Column(name = "first_name")
     private String firstName;
 
-    @NotBlank
-    @Column(name = "last_name", nullable = false)
+    @Column(name = "last_name")
     private String lastName;
 
     @Column(name = "date_of_birth")
+    @JsonDeserialize(using = JsonDateDeserializer.class)
+    @JsonSerialize(using = JsonDateSerializer.class)
     private Date dateOfBirth;
 
-    @NotBlank
     @Column(name = "active", nullable = false)
     private boolean isActive;
-
-    public User(){}
 
     public User(String login, String firstName, String lastName, Date dateOfBirth, boolean isActive) {
         this.firstName=firstName;
